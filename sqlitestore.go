@@ -42,7 +42,7 @@ type sessionRow struct {
 }
 
 type DB interface {
-	Exec(query string, args ...interface{}) (sql.Result, error) 
+	Exec(query string, args ...interface{}) (sql.Result, error)
 	Prepare(query string) (*sql.Stmt, error)
 	Close() error
 }
@@ -130,10 +130,7 @@ func (m *SqliteStore) Get(r *http.Request, name string) (*sessions.Session, erro
 
 func (m *SqliteStore) New(r *http.Request, name string) (*sessions.Session, error) {
 	session := sessions.NewSession(m, name)
-	session.Options = &sessions.Options{
-		Path:   m.Options.Path,
-		MaxAge: m.Options.MaxAge,
-	}
+	session.Options = m.Options
 	session.IsNew = true
 	var err error
 	if cook, errCookie := r.Cookie(name); errCookie == nil {
